@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char *argv[]) {
+int main() {
   int action;
 
   while (1) {
@@ -9,7 +9,17 @@ int main(int argc, char *argv[]) {
     action = scanf("%d", &action);
 
     if (action == 1) {
-      printf("criar json\n");
+      char key;
+      char value;
+
+      printf("Insira Nome do Campo: ");
+      scanf("%s", &key);
+
+      printf("Insira Valor do Campo: ");
+      scanf("%s", &value);
+
+      printf("\n%s:%s\n", &key, &value);
+
     } else {
       printf("visualizar jsons\n");
     }
