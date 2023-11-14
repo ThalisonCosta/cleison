@@ -27,7 +27,7 @@ int main() {
         strcpy(h_key, key);
 
         printf("Insira Valor do Campo: ");
-        scanf("%s", value);
+        scanf("%s", value); //TODO: https://www.geeksforgeeks.org/program-check-input-integer-string/ and also add some kind of validation to boolean values to remove the ""
         h_value = (char *)malloc((strlen(value) + 1) * sizeof(char));
         strcpy(h_value, value);
 
