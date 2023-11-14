@@ -10,14 +10,16 @@ int main() {
 
     if (action == 1) {
       char continue_inside[5];
-      char rows[4098];
+      char *rows = NULL;
+      char *h_rows = NULL;
+      int first = 1;
 
       while (1) {
         char key[100];
         char value[100];
         char *h_key;
         char *h_value;
-        char row[512];
+        char *row = NULL;
 
         printf("Insira Nome do Campo: ");
         scanf("%s", key);
@@ -29,12 +31,27 @@ int main() {
         h_value = (char *)malloc((strlen(value) + 1) * sizeof(char));
         strcpy(h_value, value);
 
-        sprintf(row, "\n\t\"%s\":\"%s\",\n", h_key, h_value);
+        row = (char *)malloc((strlen(h_key) + strlen(h_value) + 10) * sizeof(char));
+        if (first) {
+          sprintf(row, "\t\"%s\":\"%s\"", h_key, h_value);
+          first = 0;
+        } else {
+            sprintf(row, ",\n\t\"%s\":\"%s\"", h_key, h_value);
+        }
 
-        strcat(rows, row);
-        printf("\n{%s}\n", rows);
+        if (h_rows == NULL) {
+          h_rows = (char *)malloc((strlen(row) + 1) * sizeof(char));
+          strcpy(h_rows, row);
+        } else {
+          h_rows = (char *)realloc(h_rows, (strlen(h_rows) + strlen(row) + 1) * sizeof(char));
+          strcat(h_rows, row);
+        }
 
-        char stop[] = "nao";
+        free(h_key);
+        free(h_value);
+        free(row);
+
+        char stop[5] = "n";
         printf("Quer continuar? ");
         scanf("%s", continue_inside);
 
@@ -45,11 +62,18 @@ int main() {
           char filename[300];
           printf("Qual o nome do arquivo? ");
           scanf("%s", filename);
+          strcat(filename, ".json");
 
-          free(h_key);
-          free(h_value);
+          FILE *output = fopen(filename, "w");
+          if (output == NULL) {
+            printf("Erro ao abrir o arquivo.\n");
+            exit(1);
+          }
 
-          // TODO: save into a file
+          fprintf(output, "{\n%s\n}", h_rows);
+          fclose(output);
+          free(h_rows);
+
           printf("saved your new json to %s\n", filename);
           break;
         }
