@@ -5,7 +5,7 @@
 
 int main() {
   while (1) {
-    printf("1 - Criar JSON\n2 - Visualizar JSONs\n");
+    printf("1 - Create JSON\n2 - Read JSONs\n");
     int action;
     scanf("%d", &action);
 
@@ -22,12 +22,12 @@ int main() {
         char *h_value;
         char *row = NULL;
 
-        printf("Insira Nome do Campo: ");
+        printf("Input key: ");
         scanf("%s", key);
         h_key = (char *)malloc((strlen(key) + 1) * sizeof(char));
         strcpy(h_key, key);
 
-        printf("Insira Valor do Campo: ");
+        printf("Input value: ");
         scanf(
             "%s",
             value); // TODO:
@@ -60,7 +60,7 @@ int main() {
         free(row);
 
         char stop[5] = "n";
-        printf("Quer continuar? ");
+        printf("Want continue? ");
         scanf("%s", continue_inside);
 
         int result;
@@ -71,13 +71,13 @@ int main() {
         }
 
         char filename[300];
-        printf("Qual o nome do arquivo? ");
+        printf("Choose a beautiful name to your file (only the filename without the extension): ");
         scanf("%s", filename);
         strcat(filename, ".json");
 
         FILE *output = fopen(filename, "w");
         if (output == NULL) {
-          printf("Erro ao abrir o arquivo.\n");
+          printf("Failed to open file\n");
           exit(1);
         }
 
@@ -110,7 +110,7 @@ int main() {
       closedir(folder);
 
       char filename[300];
-      printf("Choose one of the files above\n");
+      printf("Choose one of the files above ☝  (only the filename without the extension)\n");
       scanf("%s", filename);
 
       strcat(filename, ".json");
