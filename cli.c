@@ -66,25 +66,27 @@ int main() {
         int result;
         result = strcmp(stop, continue_inside);
 
-        if (result == 0) {
-          char filename[300];
-          printf("Qual o nome do arquivo? ");
-          scanf("%s", filename);
-          strcat(filename, ".json");
-
-          FILE *output = fopen(filename, "w");
-          if (output == NULL) {
-            printf("Erro ao abrir o arquivo.\n");
-            exit(1);
-          }
-
-          fprintf(output, "{\n%s\n}", h_rows);
-          fclose(output);
-          free(h_rows);
-
-          printf("saved your new json to %s\n", filename);
-          break;
+        if (result != 0) {
+          continue;
         }
+
+        char filename[300];
+        printf("Qual o nome do arquivo? ");
+        scanf("%s", filename);
+        strcat(filename, ".json");
+
+        FILE *output = fopen(filename, "w");
+        if (output == NULL) {
+          printf("Erro ao abrir o arquivo.\n");
+          exit(1);
+        }
+
+        fprintf(output, "{\n%s\n}", h_rows);
+        fclose(output);
+        free(h_rows);
+
+        printf("saved your new json to %s\n", filename);
+        break;
       }
     } else {
 
@@ -111,6 +113,7 @@ int main() {
       printf("Choose one of the files above\n");
       scanf("%s", filename);
 
+      strcat(filename, ".json");
       FILE *file = fopen(filename, "r");
       char string[100];
       while (fgets(string, 100, file)) {
@@ -118,7 +121,6 @@ int main() {
       }
 
       fclose(file);
-
     }
 
     break;
