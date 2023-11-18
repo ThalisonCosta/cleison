@@ -1,3 +1,4 @@
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,23 +28,30 @@ int main() {
         strcpy(h_key, key);
 
         printf("Insira Valor do Campo: ");
-        scanf("%s", value); //TODO: https://www.geeksforgeeks.org/program-check-input-integer-string/ and also add some kind of validation to boolean values to remove the ""
+        scanf(
+            "%s",
+            value); // TODO:
+                    // https://www.geeksforgeeks.org/program-check-input-integer-string/
+                    // and also add some kind of validation to boolean
+                    // values to remove the ""
         h_value = (char *)malloc((strlen(value) + 1) * sizeof(char));
         strcpy(h_value, value);
 
-        row = (char *)malloc((strlen(h_key) + strlen(h_value) + 10) * sizeof(char));
+        row = (char *)malloc((strlen(h_key) + strlen(h_value) + 10) *
+                             sizeof(char));
         if (first) {
           sprintf(row, "\t\"%s\":\"%s\"", h_key, h_value);
           first = 0;
         } else {
-            sprintf(row, ",\n\t\"%s\":\"%s\"", h_key, h_value);
+          sprintf(row, ",\n\t\"%s\":\"%s\"", h_key, h_value);
         }
 
         if (h_rows == NULL) {
           h_rows = (char *)malloc((strlen(row) + 1) * sizeof(char));
           strcpy(h_rows, row);
         } else {
-          h_rows = (char *)realloc(h_rows, (strlen(h_rows) + strlen(row) + 1) * sizeof(char));
+          h_rows = (char *)realloc(h_rows, (strlen(h_rows) + strlen(row) + 1) *
+                                               sizeof(char));
           strcat(h_rows, row);
         }
 
@@ -79,7 +87,38 @@ int main() {
         }
       }
     } else {
-      printf("Visualizar JSONs\n");
+
+      DIR *folder;
+      struct dirent *entry;
+
+      folder = opendir(".");
+      if (folder == NULL) {
+        perror("Unable to read directory");
+        return (1);
+      }
+
+      char *contains;
+      while ((entry = readdir(folder))) {
+        contains = strstr(entry->d_name, ".json");
+        if (contains) {
+          printf("%s\n", entry->d_name);
+        }
+      }
+
+      closedir(folder);
+
+      char filename[300];
+      printf("Choose one of the files above\n");
+      scanf("%s", filename);
+
+      FILE *file = fopen(filename, "r");
+      char string[100];
+      while (fgets(string, 100, file)) {
+        printf("%s\n", string);
+      }
+
+      fclose(file);
+
     }
 
     break;
